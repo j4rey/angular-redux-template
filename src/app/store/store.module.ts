@@ -1,7 +1,10 @@
 import { NgModule } from "@angular/core";
-import { NgRedux, NgReduxModule, DevToolsExtension } from '@angular-redux/store';
-import { IAppState, INITIAL_STATE } from "./IAppState.model";
+import { NgRedux, NgReduxModule } from '@angular-redux/store';
 import { rootReducer } from "./reducer.store";
+import { createStore } from "redux";
+
+declare const window: any;
+
 @NgModule({
     declarations: [
       
@@ -13,8 +16,10 @@ import { rootReducer } from "./reducer.store";
     exports: [NgReduxModule]
   })
   export class StoreModule { 
-    constructor (ngRedux: NgRedux<IAppState>,devTools: DevToolsExtension) {
-        ngRedux.configureStore(rootReducer, INITIAL_STATE,[],
-            devTools.isEnabled() ? [devTools.enhancer()] : []);
+    constructor (ngRedux: NgRedux<any>) {
+        ngRedux.provideStore(createStore(
+            rootReducer,
+            window.devToolsExtension && window.devToolsExtension()
+          ));
     }
   }

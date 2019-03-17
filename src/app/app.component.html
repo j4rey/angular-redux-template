@@ -1,22 +1,25 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <!-- <router-outlet></router-outlet> -->
 <ng-container *ngIf="user$ | async as user">
-User ID: <input type="text" #userid [value]="user.id">
-User Name: <input type="text" #username [value]="user.name">
-<button (click)="updateUser(userid.value, username.value)">Update</button>
-<hr>
-Product Name: <input type="text">
-Quantity: <input type="number">
-<button>Add</button>
-<hr>
+  User ID: <input type="text" #userid [value]="user.id">
+  User Name: <input type="text" #username [value]="user.name">
+  <button (click)="updateUser(userid.value, username.value)">Update</button>
+  <hr>
+  Product Name: <input type="text" #productname>
+  Quantity: <input type="number" #productqty>
+  <button (click)="addOrUpdateProduct(productname.value, productqty.value)">Add</button>
+  <hr>
 
-Data:<br>
-User ID: {{user.id}}<br>
-User Name: {{user.name}}<br>
-<div>
-  Products:
-  <ul>
-    <li></li>
-  </ul>
-</div>
+  Data:<br>
+  User ID: {{user.id}}<br>
+  User Name: {{user.name}}<br>
+  <div>
+    Products:
+    <ng-container *ngIf="cart$ | async as cart">
+      <ul>
+        <li *ngFor="let product of cart.products; let i = index">{{i+1}}: {{product.productname}} - {{product.quantity}}
+        </li>
+      </ul>
+    </ng-container>
+  </div>
 </ng-container>
